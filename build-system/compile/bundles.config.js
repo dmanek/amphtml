@@ -855,6 +855,13 @@ exports.extensionBundles = [
     type: TYPES.MISC,
   },
   {
+    name: 'amp-render',
+    version: '0.1',
+    latestVersion: '0.1',
+    // options: {hasCss: true},
+    type: TYPES.MISC,
+  },
+  {
     name: 'amp-riddle-quiz',
     version: '0.1',
     latestVersion: '0.1',
