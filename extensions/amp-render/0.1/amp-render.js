@@ -235,7 +235,7 @@ export class AmpRender extends AMP.BaseElement {
       this.templates_
     );
 
-    this.loadMoreEnabled_ = this.element.hasAttribute('load-more');
+    // this.loadMoreEnabled_ = this.element.hasAttribute('load-more');
     userAssert(
       !(this.loadMoreEnabled_ && this.enableManagedResizing_),
       '%s initialized with layout=container does not support infinite scrolling with [load-more]. %s',
@@ -308,9 +308,9 @@ export class AmpRender extends AMP.BaseElement {
       this.maybeResizeListToFitItems_();
     });
 
-    // if (this.loadMoreEnabled_) {
-    //   this.initializeLoadMoreElements_();
-    // }
+    if (this.loadMoreEnabled_) {
+      this.initializeLoadMoreElements_();
+    }
 
     return this.fetchList_();
   }
