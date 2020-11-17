@@ -685,38 +685,23 @@ export class AmpRender extends AMP.BaseElement {
    * contains an array or object, put object in an array if the single-item
    * attribute is set, and truncates the list-items to a length defined
    * by max-items.
-   * @param {!JsonObject|!Array<JsonObject>} data
-   * @throws {!Error} If response is undefined
-   * @return {!Array}
+   * @param {!JsonObject} data
+   * @return {*}
    */
-  computeListItems_(data) {
-    const itemsExpr = this.element.getAttribute('items') || 'items';
-    let items = data;
-    if (itemsExpr != '.') {
-      items = getValueForExpr(/**@type {!JsonObject}*/ (data), itemsExpr);
+  computeProp_(data) {
+    if (!this.element.getAttribute('prop')) {
+      return;
     }
+    const prop = this.element.getAttribute('prop');
     userAssert(
-      typeof items !== 'undefined',
-      'Response must contain an array or object at "%s". %s',
-      itemsExpr,
-      this.element
+      typeof prop !== 'undefined',
+      'prop must contain a string pointing to a property'
     );
-    if (this.element.hasAttribute('single-item')) {
-      if (!isArray(items)) {
-        items = [items];
-      } else {
-        user().warn(
-          TAG,
-          'Expected response to contain a non-array Object due to "single-item" attribute.',
-          this.element
-        );
-      }
+    if (prop === '.') {
+      return data;
     }
-    items = user().assertArray(items);
-    if (this.element.hasAttribute('max-items')) {
-      items = this.truncateToMaxLen_(items);
-    }
-    return items;
+    // TODO fix below using lodash/get or something similar to retrieve deeply nested props
+    return data[prop];
   }
 
   /**
@@ -767,7 +752,7 @@ export class AmpRender extends AMP.BaseElement {
           return;
         }
 
-        const items = this.computeListItems_(data);
+        const items = this.computeProp_(data);
         if (this.loadMoreEnabled_) {
           this.updateLoadMoreSrc_(/** @type {!JsonObject} */ (data));
         }
