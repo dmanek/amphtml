@@ -87,7 +87,20 @@
     exportFunction('getRemoteData', getRemoteData);
   </script>
 
-  <amp-render src="/examples/data.json" prop="name"
+  <amp-state id="localState">
+    <script type="application/json">
+      {
+        "name": {
+          "person": [{
+            "title": "amp-list",
+            "url": "/components/amp-list/"
+          }]
+        }
+      }
+    </script>
+  </amp-state>
+
+  <amp-render src="amp-state:localState" prop="name.person"
      layout="fixed" height="500" width="500">
 
     <template type="amp-mustache">
@@ -97,7 +110,7 @@
     </template>
   </amp-render>
 
-  <div>
+  <!-- <div>
     <amp-state id="items">
       <script type="application/json">
         [{
@@ -132,6 +145,6 @@
     <button on="tap:AMP.setState({ items: items.splice(items.length, 0, 'item ' + items.length) })">
       Add item
     </button>
-  </div>
+  </div> -->
 
 </body></html>

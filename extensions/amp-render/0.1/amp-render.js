@@ -30,9 +30,7 @@ import {
   isLayoutSizeDefined,
   parseLayout,
 } from '../../../src/layout';
-import {LoadMoreService} from '../../amp-list/0.1/service/load-more-service'; //'./service/load-more-service';
-// extensions / amp - list / 0.1 / service / load - more - service.js;
-// extensions / amp - render / 0.1 / amp - render.js;
+import {LoadMoreService} from '../../amp-list/0.1/service/load-more-service';
 import {Pass} from '../../../src/pass';
 import {Services} from '../../../src/services';
 import {SsrTemplateHelper} from '../../../src/ssr-template-helper';
@@ -679,29 +677,28 @@ export class AmpRender extends AMP.BaseElement {
   }
 
   /**
-   * Given JSON payload data fetched from the server, modifies the
-   * data according to developer-defined parameters. Extracts the correct
-   * list items according to the 'items' attribute, asserts that this
-   * contains an array or object, put object in an array if the single-item
-   * attribute is set, and truncates the list-items to a length defined
-   * by max-items.
+   * Extracts the correct item according to the 'prop' attribute.
    * @param {!JsonObject} data
    * @return {*}
    */
   computeProp_(data) {
-    if (!this.element.getAttribute('prop')) {
-      return;
+    if (!this.element.hasAttribute('prop')) {
+      return data;
     }
     const prop = this.element.getAttribute('prop');
     userAssert(
       typeof prop !== 'undefined',
-      'prop must contain a string pointing to a property'
+      'prop must be a string pointing to an object'
     );
     if (prop === '.') {
       return data;
     }
-    // TODO fix below using lodash/get or something similar to retrieve deeply nested props
-    return data[prop];
+    const value = getValueForExpr(/**@type {!JsonObject}*/ (data), prop);
+    user().error(
+      !isArray(value),
+      'prop points to an array, perhaps use amp-list'
+    );
+    return value;
   }
 
   /**
@@ -775,18 +772,18 @@ export class AmpRender extends AMP.BaseElement {
     });
   }
 
-  /**
-   * @param {!Array<?JsonObject>} items
-   * @return {!Array<?JsonObject>}
-   * @private
-   */
-  truncateToMaxLen_(items) {
-    const maxLen = parseInt(this.element.getAttribute('max-items'), 10);
-    if (maxLen < items.length) {
-      items = items.slice(0, maxLen);
-    }
-    return items;
-  }
+  // /**
+  //  * @param {!Array<?JsonObject>} items
+  //  * @return {!Array<?JsonObject>}
+  //  * @private
+  //  */
+  // truncateToMaxLen_(items) {
+  //   const maxLen = parseInt(this.element.getAttribute('max-items'), 10);
+  //   if (maxLen < items.length) {
+  //     items = items.slice(0, maxLen);
+  //   }
+  //   return items;
+  // }
 
   /**
    * @param {!JsonObject} data
