@@ -87,8 +87,8 @@
     exportFunction('getRemoteData', getRemoteData);
   </script>
 
-  <amp-render src="/examples/data.json" prop="."
-     layout="fixed" height="100" width="500">
+  <amp-render src="/examples/data.json" prop="name"
+     layout="fixed" height="500" width="500">
 
     <template type="amp-mustache">
       <div class="name-entry">
@@ -96,5 +96,42 @@
       </div>
     </template>
   </amp-render>
+
+  <div>
+    <amp-state id="items">
+      <script type="application/json">
+        [{
+          "title": "foo",
+          "items": [
+            {"url": "www.a.com", "title": "a"},
+            {"url": "www.b.com", "title": "b"}
+          ],
+          "favorites": [
+            {"url": "www.a.com", "title": "a"},
+            {"url": "www.b.com", "title": "b"}
+          ]
+        }]
+      </script>
+    </amp-state>
+    <amp-list layout="fixed-height" height="0" [src]="items" [height]="items.length * 22" single-item items="." binding="no">
+      <template type="amp-mustache">
+        <h1>{{title}}</h1>
+        {{#items}}
+          <div class="url-entry">
+            <a href="{{url}}">{{title}}</a>
+          </div>
+        {{/#items}}
+        {{#favorites}}
+          <div class="favorites-entry">
+            <a href="{{url}}">{{title}}</a>
+          </div>
+        {{/#favorites}}
+
+      </template>
+    </amp-list>
+    <button on="tap:AMP.setState({ items: items.splice(items.length, 0, 'item ' + items.length) })">
+      Add item
+    </button>
+  </div>
 
 </body></html>
