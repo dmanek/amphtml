@@ -149,6 +149,7 @@
   <script async custom-element="amp-consent" src="https://cdn.ampproject.org/v0/amp-consent-0.1.js"></script>
   <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
   <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+  <script async custom-element="amp-next-page" src="https://cdn.ampproject.org/v0/amp-next-page-1.0.js"></script>
   <style amp-boilerplate>
     body {
       -webkit-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
@@ -378,8 +379,27 @@
     </article>
   </main>
 
-  <footer>
-    <div class="brand-logo">PublisherLogo</div>
-  </footer>
+
+  <div style="height:5000px;background:red"></div>
+
+  <amp-next-page>
+    <script type="application/json">
+      [
+        {
+          "title": "Amp img",
+          "image": "https://picsum.photos/200",
+          "url": "/examples/img.amp.html"
+        },
+        {
+          "title": "amp-twitter",
+          "image": "https://picsum.photos/200",
+          "url": "/examples/amp-consent-overlay.html"
+        }
+      ]
+    </script>
+    <!-- <div class="amp-next-page-sample-separator" separator>
+      amp-next-page separator
+    </div> -->
+  </amp-next-page>
 </body>
 </html>
