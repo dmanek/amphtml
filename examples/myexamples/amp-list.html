@@ -1,0 +1,129 @@
+<!--
+  ## Introduction
+
+  The [`amp-list`](/content/amp-dev/documentation/components/reference/amp-list-v0.1.md) enables client-side rendering in AMP. Content can either be fetched from a JSON endpoint or locally from `amp-state`.
+--><!-- -->
+<!doctype html>
+<html ⚡ lang="en">
+<head>
+<meta charset="utf-8">
+  <title>amp-list</title>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <!-- ## Setup -->
+  <!-- Import the `amp-list` component ... -->
+  <script async custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js"></script>
+  <!-- ... and the `amp-mustache` component in the header. -->
+  <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
+  <!-- Import the `amp-bind` component for dynamically changing the content of an `amp-list`. -->
+  <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
+  <link rel="canonical" href="https://amp.dev/documentation/examples/components/amp-list/index.html">
+  <meta name="viewport" content="width=device-width">
+  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+  <style amp-custom>
+   :root {
+     --space-1: 0.5rem;
+     --space-2: 1rem;
+     --color-bg-light: #FAFAFC;
+     --color-primary: #005AF0;
+     --color-text-light: #fff;
+     --box-shadow-1: 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 1px -1px rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+   }
+
+  /* Position the overflow button in the top right corner */
+  .list-overflow {
+    width: max-content;
+    margin: var(--space-1);
+    margin-left: auto;
+    padding: var(--space-1);
+    color: var(--color-text-light);
+    background-color: var(--color-primary);
+  }
+
+  .product {
+    height: 100px;
+    max-width: 400px;
+    box-shadow: var(--box-shadow-1);
+    background: var(--color-bg-light);
+    border-radius: 2px;
+    margin: var(--space-1);
+    display: flex;
+    align-items: center;
+  }
+
+  .product amp-img, .product .image-placeholder {
+    margin-right: var(--space-2);
+  }
+
+  .product .image-placeholder {
+    width: 150px;
+    height: 100px;
+    background-color: #999;
+  }
+  </style>
+</head>
+<body>
+
+  <!-- ## Basic usage -->
+  <!--
+  The `amp-list` content is provided by a JSON CORS endpoint, which is defined by the `src` attribute. The URL's protocol must be HTTPS. The response must be a JSON object containing an array property `items`, for example:
+  ```json
+  {
+    "items": [
+      {
+        "title": "amp-carousel",
+        "url": "https://ampbyexample.com/components/amp-carousel"
+      },
+      ...
+    ]
+  }
+  ```
+  The list content is rendered via an [amp-mustache template](/content/amp-dev/documentation/components/reference/amp-mustache-v0.2.md). The template can be specified either by id, or by using a nested element. For performance reasons, we're adding `binding="no"` as we're not using `amp-bind`.
+  -->
+  <amp-state id="localState">
+    <script type="application/json">
+    {
+      "items": [
+        {
+          "title": "amp-carousel",
+          "url": "/components/amp-carousel/"
+        },
+        {
+          "title": "amp-img",
+          "url": "/components/amp-img/"
+        },
+        {
+          "title": "amp-ad",
+          "url": "/components/amp-ad/"
+        },
+        {
+          "title": "amp-accordion",
+          "url": "/components/amp-accordion/"
+        }
+      ]
+    }
+    </script>
+  </amp-state>
+  <amp-state id="singleItem">
+    <script type="application/json">
+    {
+      "items": {
+        "title": "amp-carousel",
+        "url": "/components/amp-carousel/",
+        "someprop": {
+          "foo1": "bar1",
+          "foo2": "bar2",
+          "nestedfoo": {
+            "foo3": "bar3"
+          }
+        }
+      }
+    }
+    </script>
+  </amp-state>
+  <amp-list layout="fixed-height" height="500" src="amp-state:singleItem" single-item binding="no">
+    <template type="amp-mustache">
+      <div><a href="{{url}}">{{title}}-{{someprop.foo1}}-{{someprop.foo2}}-{{someprop.nestedfoo.foo3}}</a></div>
+    </template>
+  </amp-list>
+
+</body></html>
